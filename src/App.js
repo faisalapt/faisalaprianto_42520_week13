@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { Button, Center, Container, Heading, SimpleGrid, Text } from '@chakra-ui/react';
+import { Button, Center, Container, Heading, SimpleGrid, Text, chakra } from '@chakra-ui/react';
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
 
 export default function App() {
@@ -42,8 +42,8 @@ export default function App() {
       setMinutes(minutes + 1);
       setSecond(0);
     }
-    if(second === 60){
-      if(minutes === 59){
+    if(minutes === 60){
+      if(second >= 59){
         setHours(hours + 1);
         setMinutes(0);
         setSecond(0);
@@ -116,7 +116,7 @@ export default function App() {
       <Text fontSize="4xl">Countdown Timer</Text>
       {isRunning && hours === 0 && minutes === 0 && second === 0 && (<Center><Text fontSize="xl">Times Up!!!</Text></Center>)}
       </Heading>
-      <SimpleGrid columns={3} spacing={30}>
+      <SimpleGrid columns={3} spacing={30} marginTop="20%">
         {!isRunning && (<TriangleUpIcon onClick={inchours}/>)}
         {!isRunning && (<TriangleUpIcon onClick={incmin}/>)}
         {!isRunning && (<TriangleUpIcon onClick={incsec}/>)}
@@ -134,10 +134,11 @@ export default function App() {
       <SimpleGrid columns={2} spacing={10} marginTop="7%">
         {!isRunning && status === 1 && (<Button onClick={resume}>Resume</Button>)}
         {!isRunning && status === 1 && (<Button onClick={reset}>Reset</Button>)}
-        {isRunning && (hours > 0) && (minutes > 0) && (second > 0) && (<Button onClick={pause}>Pause</Button>)}
-        {isRunning && (hours > 0) && (minutes > 0) && (second > 0) && (<Button onClick={reset}>Reset</Button>)}
+        {isRunning && (hours >= 0) && (minutes >= 0) && (second >= 0) && (<Button onClick={pause}>Pause</Button>)}
+        {isRunning && (hours >= 0) && (minutes >= 0) && (second >= 0) && (<Button onClick={reset}>Reset</Button>)}
       </SimpleGrid>
       {isRunning && hours === 0 && minutes === 0 && second === 0 && (<Center><Button onClick={reset}>Reset</Button></Center>)}
+      <Center><chakra.h1 pos="fixed" bottom="0" fontSize="24px">&copy; Faisal Aprianto - 00000042520</chakra.h1></Center>
     </Container>
   );
 }
