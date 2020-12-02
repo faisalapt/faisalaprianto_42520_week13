@@ -137,7 +137,6 @@ export default function App() {
         {isRunning && (hours >= 0) && (minutes >= 0) && (second >= 0) && (<Button onClick={pause}>Pause</Button>)}
         {isRunning && (hours >= 0) && (minutes >= 0) && (second >= 0) && (<Button onClick={reset}>Reset</Button>)}
       </SimpleGrid>
-      {isRunning && hours === 0 && minutes === 0 && second === 0 && (<Center><Button onClick={reset}>Reset</Button></Center>)}
       <Center><chakra.h1 pos="fixed" bottom="0" fontSize="24px">&copy; Faisal Aprianto - 00000042520</chakra.h1></Center>
     </Container>
   );
