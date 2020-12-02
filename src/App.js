@@ -4,10 +4,9 @@ import { Button, Center, Container, Heading, SimpleGrid, Text } from '@chakra-ui
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
 
 export default function App() {
-  const [minutes, setMinutes] = useState(58);
-  const [second, setSecond] = useState(20);
-  const [hours, setHours] = useState(1);
-  const [startTime, setStartTime] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [second, setSecond] = useState(0);
+  const [hours, setHours] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [status, setStatus] = useState(0);
 
@@ -50,13 +49,27 @@ export default function App() {
         setSecond(0);
       }
     }
-  });
+    if(minutes > 0){
+      if(second < 0){
+        setMinutes(minutes - 1);
+        setSecond(59);
+      }
+    }
+    if(minutes < 0){
+      if(second < 0){
+        setHours(hours - 1);
+        setMinutes(59);
+        setSecond(59);
+      }
+    }
+  }, [hours, isRunning, minutes, second]);
 
   const reset = () => {
     setSecond(0);
     setMinutes(0);
     setHours(0);
     setStatus(0);
+    setIsRunning(false);
   }
 
   const start = () => {
@@ -85,10 +98,23 @@ export default function App() {
     setHours(hours + 1);
   }
 
+  const decsec = () => {
+    setSecond(second - 1);
+  }
+
+  const decmin= () => {
+    setMinutes(minutes - 1);
+  }
+
+  const dechours = () => {
+    setHours(hours - 1);
+  }
+
   return (
     <Container centerContent marginTop="10%">
       <Heading>
-      <Text fontSize="6xl">Countdown Timer</Text>
+      <Text fontSize="4xl">Countdown Timer</Text>
+      {isRunning && hours === 0 && minutes === 0 && second === 0 && (<Center><Text fontSize="xl">Times Up!!!</Text></Center>)}
       </Heading>
       <SimpleGrid columns={3} spacing={30}>
         {!isRunning && (<TriangleUpIcon onClick={inchours}/>)}
@@ -97,17 +123,21 @@ export default function App() {
         <p>{hours}</p>
         <p>{minutes}</p>
         <p>{second}</p>
-        <TriangleDownIcon/>
-        <TriangleDownIcon/>
-        <TriangleDownIcon/>
+        {!isRunning && (hours > 0) && (<TriangleDownIcon onClick={dechours}/>)}
+        {!isRunning && (hours === 0) && (<TriangleDownIcon/>)}
+        {!isRunning && (minutes > 0) && (<TriangleDownIcon onClick={decmin}/>)}
+        {!isRunning && (minutes === 0) && (<TriangleDownIcon/>)}
+        {!isRunning && (second > 0) && (<TriangleDownIcon onClick={decsec}/>)}
+        {!isRunning && (second === 0) && (<TriangleDownIcon/>)}
       </SimpleGrid>
       {!isRunning && status === 0 && (<Button onClick={start} marginTop="7%">Start</Button>)}
       <SimpleGrid columns={2} spacing={10} marginTop="7%">
         {!isRunning && status === 1 && (<Button onClick={resume}>Resume</Button>)}
         {!isRunning && status === 1 && (<Button onClick={reset}>Reset</Button>)}
-        {isRunning && (<Button onClick={pause}>Pause</Button>)}
-        {isRunning && (<Button onClick={reset}>Reset</Button>)}
+        {isRunning && (hours > 0) && (minutes > 0) && (second > 0) && (<Button onClick={pause}>Pause</Button>)}
+        {isRunning && (hours > 0) && (minutes > 0) && (second > 0) && (<Button onClick={reset}>Reset</Button>)}
       </SimpleGrid>
+      {isRunning && hours === 0 && minutes === 0 && second === 0 && (<Center><Button onClick={reset}>Reset</Button></Center>)}
     </Container>
   );
 }
