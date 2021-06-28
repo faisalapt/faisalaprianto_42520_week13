@@ -43,6 +43,8 @@ export default function App() {
       setSecond(0);
     }
     if(minutes === 60){
+        setHours(hours + 1);
+        setMinutes(0);
       if(second >= 59){
         setHours(hours + 1);
         setMinutes(0);
